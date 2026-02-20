@@ -605,6 +605,17 @@ def validate_proxy(p: dict) -> bool:
             return False
         if cipher.lower() not in VALID_SS_CIPHERS:
             return False
+        # 2022-blake3-* ciphers require valid base64-encoded keys
+        if cipher.lower().startswith("2022-blake3-"):
+            try:
+                key_bytes = base64.b64decode(password)
+                # aes-128 needs 16-byte key, aes-256/chacha20 need 32-byte key
+                if "128" in cipher and len(key_bytes) != 16:
+                    return False
+                if ("256" in cipher or "chacha20" in cipher) and len(key_bytes) != 32:
+                    return False
+            except Exception:
+                return False
     elif ptype == "ssr":
         if not p.get("cipher") or not p.get("password"):
             return False
@@ -978,7 +989,6 @@ def generate_config(proxies: list[dict]) -> dict:
         "mode": "rule",
         "log-level": "warning",
         "ipv6": True,
-        "global-client-fingerprint": "chrome",
         "unified-delay": True,
         "tcp-concurrent": True,
         "dns": {
