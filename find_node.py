@@ -12,6 +12,8 @@ import sys
 import yaml
 import requests
 
+import random
+
 # ============================================================
 # Subscription sources (public free proxy aggregators)
 # ============================================================
@@ -23,9 +25,21 @@ SUB_URLS = [
     "https://raw.githubusercontent.com/mfuu/v2ray/master/v2ray",
     "https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/v2ray.txt",
     "https://raw.githubusercontent.com/Leon406/SubCrawler/master/sub/share/v2",
+    # --- New sources (verified 2026-02-20) ---
+    # ebrasha: updated every 15 min, all protocols
+    "https://raw.githubusercontent.com/ebrasha/free-v2ray-public-list/refs/heads/main/all_extracted_configs.txt",
+    # Epodonios: updated every 5 min, vmess/vless/trojan/ss
+    "https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/All_Configs_Sub.txt",
+    # mahdibland: aggregator with speed-tested nodes
+    "https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt",
+    # Mahdi0024: auto-collected and tested proxies
+    "https://raw.githubusercontent.com/Mahdi0024/ProxyCollector/master/sub/proxies.txt",
+    # snakem982: proxypool (Clash Meta YAML format)
+    "https://raw.githubusercontent.com/snakem982/proxypool/main/source/clash-meta.yaml",
 ]
 
 REQUEST_TIMEOUT = 15
+MAX_NODES = 500  # Max nodes to include in final config
 REQUEST_HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                   "(KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
@@ -588,9 +602,18 @@ REGION_KEYWORDS = {
     "AU": (["澳大利亚", "AU", "Australia", "Sydney", "悉尼"], "🇦🇺 澳大利亚"),
     "IN": (["印度", "IN", "India", "Mumbai", "孟买"], "🇮🇳 印度"),
     "BR": (["巴西", "BR", "Brazil", "圣保罗", "Sao Paulo"], "🇧🇷 巴西"),
-    "HK": (["香港", "HK", "Hong Kong"], "🇭🇰 香港"),
-    "TW": (["台湾", "TW", "Taiwan", "台北"], "🇹🇼 台湾"),
 }
+
+# China/HK/TW keywords to EXCLUDE
+EXCLUDED_KEYWORDS = [
+    "香港", "HK", "Hong Kong", "台湾", "TW", "Taiwan", "台北",
+    "中国", "CN", "China", "北京", "上海", "广州", "深圳",
+    "内蒙", "回国", "剩余", "过期", "到期", "官网", "流量",
+    "127.0.0.1", "localhost",
+]
+
+# Regions considered "premium" (Europe & Americas) - get priority in selection
+PRIORITY_REGIONS = {"🇺🇸 美国", "🇬🇧 英国", "🇩🇪 德国", "🇫🇷 法国", "🇨🇦 加拿大", "🇦🇺 澳大利亚"}
 
 
 def classify_region(proxy_name: str) -> list[str]:
@@ -602,6 +625,72 @@ def classify_region(proxy_name: str) -> list[str]:
                 regions.append(group_name)
                 break
     return regions
+
+
+def is_excluded(proxy: dict) -> bool:
+    """Check if a proxy should be excluded (China/HK/TW/invalid)."""
+    name = proxy.get("name", "").lower()
+    server = proxy.get("server", "").lower()
+
+    for kw in EXCLUDED_KEYWORDS:
+        if kw.lower() in name or kw.lower() in server:
+            return True
+
+    # Exclude loopback / private IPs
+    if server.startswith(("127.", "10.", "192.168.", "0.0.0.")):
+        return True
+
+    return False
+
+
+def select_best_nodes(proxies: list[dict], max_nodes: int = MAX_NODES) -> list[dict]:
+    """Select the best nodes with priority: EU/US first, fast response, diverse regions."""
+    # Filter out excluded nodes
+    filtered = [p for p in proxies if not is_excluded(p)]
+    print(f"After filtering CN/HK/TW/invalid: {len(filtered)} nodes")
+
+    if len(filtered) <= max_nodes:
+        return filtered
+
+    # Categorize: priority regions vs others
+    priority = []
+    others = []
+    for p in filtered:
+        regions = classify_region(p["name"])
+        if any(r in PRIORITY_REGIONS for r in regions):
+            priority.append(p)
+        else:
+            others.append(p)
+
+    # Sort each group: nodes with delay info first (lower delay = better),
+    # then nodes without delay info
+    def sort_key(p):
+        delay = p.get("delay", 99999)
+        if isinstance(delay, (int, float)):
+            return delay
+        return 99999
+
+    priority.sort(key=sort_key)
+    others.sort(key=sort_key)
+
+    # Allocate: 60% to priority regions, 40% to others
+    priority_quota = int(max_nodes * 0.6)
+    others_quota = max_nodes - priority_quota
+
+    selected_priority = priority[:priority_quota]
+    selected_others = others[:others_quota]
+
+    # If one group doesn't fill its quota, give remainder to the other
+    if len(selected_priority) < priority_quota:
+        extra = priority_quota - len(selected_priority)
+        selected_others = others[:others_quota + extra]
+    elif len(selected_others) < others_quota:
+        extra = others_quota - len(selected_others)
+        selected_priority = priority[:priority_quota + extra]
+
+    result = selected_priority + selected_others
+    print(f"Selected: {len(selected_priority)} priority (EU/US/CA/AU/UK/DE/FR) + {len(selected_others)} others = {len(result)} total")
+    return result
 
 
 # ============================================================
@@ -875,6 +964,9 @@ def main():
     # Dedup
     proxies = dedup_proxies(all_proxies)
     print(f"After dedup: {len(proxies)} unique nodes")
+
+    # Filter and select best nodes
+    proxies = select_best_nodes(proxies)
 
     # Generate config
     config = generate_config(proxies)
