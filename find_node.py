@@ -9,6 +9,10 @@ import re
 import urllib.parse
 import datetime
 import sys
+import time
+import socket
+import ssl
+import concurrent.futures
 import yaml
 import requests
 
@@ -701,11 +705,12 @@ REGION_KEYWORDS = {
     "BR": (["巴西", "BR", "Brazil", "圣保罗", "Sao Paulo"], "🇧🇷 巴西"),
 }
 
-# China/HK/TW keywords to EXCLUDE
+# China/HK/TW and high-risk keywords to EXCLUDE
 EXCLUDED_KEYWORDS = [
     "香港", "HK", "Hong Kong", "台湾", "TW", "Taiwan", "台北",
     "中国", "CN", "China", "北京", "上海", "广州", "深圳",
     "内蒙", "回国", "剩余", "过期", "到期", "官网", "流量",
+    "高风险", "黑名单", "禁止", "封禁", "blocked",
     "127.0.0.1", "localhost",
 ]
 
@@ -740,19 +745,113 @@ def is_excluded(proxy: dict) -> bool:
     return False
 
 
+# ============================================================
+# Latency Testing
+# ============================================================
+
+TCP_TIMEOUT = 3  # seconds per connection test
+MAX_WORKERS = 80  # concurrent test threads
+MAX_DELAY_MS = 2000  # discard nodes with latency above this
+
+# Reusable SSL context (skip cert verify for speed)
+_SSL_CTX = ssl.create_default_context()
+_SSL_CTX.check_hostname = False
+_SSL_CTX.verify_mode = ssl.CERT_NONE
+
+
+def test_tcp_latency(proxy: dict) -> int | None:
+    """Test latency: DNS + TCP + TLS handshake (if TLS). Returns ms or None."""
+    server = proxy.get("server", "")
+    port = proxy.get("port", 0)
+    use_tls = proxy.get("tls", False)
+    if not server or not port:
+        return None
+
+    sock = None
+    try:
+        start = time.perf_counter()
+
+        # DNS resolve
+        addr_info = socket.getaddrinfo(server, port, socket.AF_UNSPEC, socket.SOCK_STREAM)
+        if not addr_info:
+            return None
+        family, socktype, proto, _, sockaddr = addr_info[0]
+
+        # TCP connect
+        sock = socket.socket(family, socktype, proto)
+        sock.settimeout(TCP_TIMEOUT)
+        sock.connect(sockaddr)
+
+        # TLS handshake for TLS-enabled nodes (measures real proxy path latency)
+        if use_tls or port == 443:
+            sni = proxy.get("servername") or proxy.get("sni") or server
+            ssock = _SSL_CTX.wrap_socket(sock, server_hostname=sni)
+            ssock.do_handshake()
+            ssock.close()
+            sock = None  # already closed by ssock
+
+        elapsed_ms = round((time.perf_counter() - start) * 1000)
+        return max(elapsed_ms, 1)
+    except Exception:
+        return None
+    finally:
+        if sock:
+            try:
+                sock.close()
+            except Exception:
+                pass
+
+
+def batch_test_latency(proxies: list[dict]) -> list[dict]:
+    """Test latency for all proxies concurrently. Returns proxies with delay field set."""
+    total = len(proxies)
+    print(f"\nTesting latency for {total} nodes ({MAX_WORKERS} concurrent)...")
+
+    results = [None] * total
+    alive_count = 0
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        future_map = {executor.submit(test_tcp_latency, p): i for i, p in enumerate(proxies)}
+        done_count = 0
+        for future in concurrent.futures.as_completed(future_map):
+            idx = future_map[future]
+            done_count += 1
+            try:
+                latency = future.result()
+                results[idx] = latency
+                if latency is not None:
+                    alive_count += 1
+            except Exception:
+                results[idx] = None
+
+            if done_count % 100 == 0 or done_count == total:
+                print(f"  Progress: {done_count}/{total} tested, {alive_count} alive")
+
+    # Update proxies with latency; filter dead and slow (>2s) nodes
+    alive_proxies = []
+    slow_count = 0
+    for i, p in enumerate(proxies):
+        latency = results[i]
+        if latency is not None:
+            if latency > MAX_DELAY_MS:
+                slow_count += 1
+                continue
+            p["delay"] = latency
+            alive_proxies.append(p)
+
+    print(f"Latency test done: {alive_count}/{total} alive, {slow_count} removed (>{MAX_DELAY_MS}ms), {len(alive_proxies)} kept")
+    return alive_proxies
+
+
 def select_best_nodes(proxies: list[dict], max_nodes: int = MAX_NODES) -> list[dict]:
     """Select the best nodes with priority: EU/US first, fast response, diverse regions."""
-    # Filter out excluded nodes
-    filtered = [p for p in proxies if not is_excluded(p)]
-    print(f"After filtering CN/HK/TW/invalid: {len(filtered)} nodes")
-
-    if len(filtered) <= max_nodes:
-        return filtered
+    if len(proxies) <= max_nodes:
+        return proxies
 
     # Categorize: priority regions vs others
     priority = []
     others = []
-    for p in filtered:
+    for p in proxies:
         regions = classify_region(p["name"])
         if any(r in PRIORITY_REGIONS for r in regions):
             priority.append(p)
@@ -1068,8 +1167,26 @@ def main():
     # Clean up empty/None fields
     proxies = [clean_proxy(p) for p in proxies]
 
-    # Filter and select best nodes
+    # Filter excluded regions/keywords
+    proxies = [p for p in proxies if not is_excluded(p)]
+    print(f"After filtering CN/HK/TW/high-risk: {len(proxies)} nodes")
+
+    # Test latency (TCP handshake) and remove dead nodes
+    proxies = batch_test_latency(proxies)
+
+    # Sort by latency
+    proxies.sort(key=lambda p: p.get("delay", 99999))
+
+    # Select best nodes (capped at MAX_NODES)
     proxies = select_best_nodes(proxies)
+
+    # Add latency prefix to node names like "[xxms] name"
+    for p in proxies:
+        delay = p.get("delay", 0)
+        orig_name = p["name"]
+        # Strip existing delay prefix if any
+        orig_name = re.sub(r"^\[\d+ms\]\s*", "", orig_name)
+        p["name"] = f"[{delay}ms] {orig_name}"
 
     # Generate config
     config = generate_config(proxies)
