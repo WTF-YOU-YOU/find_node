@@ -190,9 +190,6 @@ def parse_vless(uri: str) -> dict | None:
         if flow:
             proxy["flow"] = flow
 
-        # Encryption
-        proxy["encryption"] = params.get("encryption", "none")
-
         # SNI
         sni = params.get("sni", "") or params.get("serverName", "")
         if sni:
@@ -652,6 +649,10 @@ def clean_proxy(p: dict) -> dict:
         if isinstance(v, dict) and not v:
             continue
         cleaned[k] = v
+
+    # Strip 'encryption' from vless proxies (mihomo rejects this field)
+    if cleaned.get("type") == "vless":
+        cleaned.pop("encryption", None)
 
     # Set default network for vmess if missing
     if cleaned.get("type") == "vmess" and "network" not in cleaned:
