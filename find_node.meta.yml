@@ -1,4 +1,4 @@
-# Update: 2026-02-20 16:47
+# Update: 2026-02-20 17:17
 allow-lan: false
 mixed-port: 7890
 external-controller: 0.0.0.0:9090
@@ -476,7 +476,35 @@ proxies:
       Host: server32.beheshtbaneh.com
 - name: 美国 CloudFlare节点
   type: vmess
-  server: gbnh.0nn.ccwu.cc
+  server: mkjhu.2nn.ccwu.cc
+  port: 443
+  uuid: 4e45c1b4-9107-45dd-9995-cdf7cbb44d9d
+  alterId: 0
+  cipher: auto
+  tls: true
+  skip-cert-verify: true
+  network: ws
+  ws-opts:
+    path: /iSRWSKUJKNuXvVzsYHmsMrnO
+    headers:
+      Host: mkjhu.2nn.ccwu.cc
+  servername: mkjhu.2nn.ccwu.cc
+- name: '美国 CloudFlare节点 #2'
+  type: vmess
+  server: 172.67.197.47
+  port: 443
+  uuid: 516d8a7a-3f0b-41d3-bad0-246116381516
+  alterId: 0
+  cipher: auto
+  tls: true
+  skip-cert-verify: true
+  network: ws
+  ws-opts:
+    path: /
+  servername: sy4.620720.xyz
+- name: '美国 CloudFlare节点 #3'
+  type: vmess
+  server: jjju.1x5.indevs.in
   port: 80
   uuid: 4e45c1b4-9107-45dd-9995-cdf7cbb44d9d
   alterId: 0
@@ -487,8 +515,8 @@ proxies:
   ws-opts:
     path: /iSRWSKUJKNuXvVzsYHmsMrnO
     headers:
-      Host: gbnh.0nn.ccwu.cc
-- name: '美国 CloudFlare节点 #2'
+      Host: jjju.1x5.indevs.in
+- name: '美国 CloudFlare节点 #4'
   type: vmess
   server: turk1.net.net
   port: 80
@@ -502,35 +530,6 @@ proxies:
     path: /?BIA_TELEGRAM@AZARBAYJAB1_AZARBAYJAB1_AZARBAYJAB1_AZARBAYJAB1/?de=2560
     headers:
       Host: tr1-smart.adelping.com.
-- name: '美国 CloudFlare节点 #3'
-  type: vmess
-  server: bghy.1x9.indevs.in
-  port: 443
-  uuid: 4e45c1b4-9107-45dd-9995-cdf7cbb44d9d
-  alterId: 0
-  cipher: auto
-  tls: true
-  skip-cert-verify: true
-  network: ws
-  ws-opts:
-    path: /iSRWSKUJKNuXvVzsYHmsMrnO
-    headers:
-      Host: bghy.1x9.indevs.in
-  servername: bghy.1x9.indevs.in
-- name: '美国 CloudFlare节点 #4'
-  type: vmess
-  server: nmju.1jj.ccwu.cc
-  port: 80
-  uuid: 4e45c1b4-9107-45dd-9995-cdf7cbb44d9d
-  alterId: 0
-  cipher: auto
-  tls: false
-  skip-cert-verify: true
-  network: ws
-  ws-opts:
-    path: /iSRWSKUJKNuXvVzsYHmsMrnO
-    headers:
-      Host: nmju.1jj.ccwu.cc
 - name: 🇨🇦 SS-加拿大>英国-NF解锁英国地区非自制剧-ChatGPT-144.217.164.29:12000
   type: ss
   server: 144.217.164.29
@@ -923,21 +922,6 @@ proxies:
   sni: ya.ru
   skip-cert-verify: true
   udp: true
-- name: '🇺🇸 美国 CloudFlare节点 #8'
-  type: vmess
-  server: mkjhu.2nn.ccwu.cc
-  port: 443
-  uuid: 4e45c1b4-9107-45dd-9995-cdf7cbb44d9d
-  alterId: 0
-  cipher: auto
-  tls: true
-  skip-cert-verify: true
-  network: ws
-  ws-opts:
-    path: /iSRWSKUJKNuXvVzsYHmsMrnO
-    headers:
-      Host: mkjhu.2nn.ccwu.cc
-  servername: mkjhu.2nn.ccwu.cc
 - name: 🇺🇸 _US_美国
   type: trojan
   server: 216.24.57.250
@@ -1390,7 +1374,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 德国_121320040
   type: vmess
   server: 185.135.9.247
@@ -1457,7 +1441,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 澳大利亚_121320002
   type: vmess
   server: au.takeshi.wiki
@@ -1767,7 +1751,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 美国_121320035
   type: vmess
   server: 64.176.42.137
@@ -1777,7 +1761,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 美国_121320036
   type: vmess
   server: 64.176.59.68
@@ -1787,7 +1771,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 美国_121320037
   type: vmess
   server: 47.236.22.3
@@ -1797,7 +1781,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 美国_121320039
   type: vmess
   server: 158.178.227.16
@@ -2221,7 +2205,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 美国_121320194
   type: vmess
   server: 154.90.34.148
@@ -2245,7 +2229,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 美国_121320197
   type: vmess
   server: 172.67.229.31
@@ -2311,7 +2295,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 美国_121320205
   type: vmess
   server: 154.90.34.225
@@ -2513,7 +2497,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 美国_121320316
   type: vmess
   server: 38.6.227.31
@@ -2523,7 +2507,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 美国_121320333
   type: vmess
   server: 38.180.33.136
@@ -2533,7 +2517,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 美国_121320334
   type: vmess
   server: 107.186.200.127
@@ -2696,7 +2680,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 美国_121320399
   type: vmess
   server: 47.89.192.94
@@ -2844,7 +2828,6 @@ proxies:
   port: 8443
   uuid: 1cec1ebc-b489-4769-f2d9-e079b5832a60
   alterId: 0
-  cipher: ''
   tls: true
   skip-cert-verify: true
   network: ws
@@ -2853,13 +2836,13 @@ proxies:
     headers:
       Host: cloudconeaaa.gorgorchicken.one
   servername: cloudconeaaa.gorgorchicken.one
+  cipher: auto
 - name: 美国_121320975
   type: vmess
   server: 172.67.229.24
   port: 8880
   uuid: 617c9bc4-4116-41c6-99e0-ace49a38fcdb
   alterId: 0
-  cipher: ''
   tls: false
   skip-cert-verify: true
   network: ws
@@ -2867,6 +2850,7 @@ proxies:
     path: /Jnv8ViZOUVgijjOh0p5uGjHnXIiY
     headers:
       Host: fr7.tehme100.fun
+  cipher: auto
 - name: 美国_121320976
   type: vmess
   server: 5.161.82.42
@@ -2896,7 +2880,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 英国_121320046
   type: vmess
   server: 104.238.172.8
@@ -3119,21 +3103,20 @@ proxies:
     headers:
       Host: vc.fly.dev
   servername: vc.fly.dev
-- name: 🟣🔥+Channel+Server+Free+@Farah_VPN
+- name: t.me/v2Line | Free | 3357 | Türkiye
   type: vmess
-  server: 209.46.30.199
-  port: 443
-  uuid: f08369d1-5ee7-4b16-d786-30bce12fc33c
+  server: 45.141.148.143
+  port: 5059
+  uuid: e720d2b6-80dd-4664-b64e-6cc784bce329
   alterId: 0
   cipher: auto
-  tls: true
+  tls: false
   skip-cert-verify: true
   network: ws
   ws-opts:
-    path: /f08369d1-5ee7-4b16-d786-30bce12fc33c
+    path: /
     headers:
-      Host: ous3.dean52.top
-  servername: ous3.dean52.top
+      Host: bmi.ir
 - name: t.me/v2Line | Free | 3368 | Canada
   type: vmess
   server: 15.235.85.147
@@ -3259,6 +3242,16 @@ proxies:
   network: ws
   ws-opts:
     path: /
+- name: 8514343124_b8dc-78.12GB📊-29D,21H⏳
+  type: vmess
+  server: dl9.g3games.ir
+  port: 8080
+  uuid: 2c0ae5b4-9d90-4246-8055-85a84dc175ac
+  alterId: 0
+  cipher: auto
+  tls: false
+  skip-cert-verify: true
+  network: tcp
 - name: 🇰🇷 @FreakConfig
   type: vmess
   server: seoul03.zgjok.com
@@ -3609,20 +3602,10 @@ proxies:
     path: /vmess/
     headers:
       Host: google.com
-- name: '>>@oneclickvpnkeys::US::US'
-  type: vmess
-  server: 157.173.206.47
-  port: 57449
-  uuid: 4f6d0ce6-0406-447c-f307-21a6aa7fe6b2
-  alterId: 0
-  cipher: auto
-  tls: false
-  skip-cert-verify: true
-  network: tcp
 - name: ❌Düsseldorf-GetAFreeNode.com
   type: vmess
   server: 5.83.150.108
-  port: 12151
+  port: 50840
   uuid: 254551f6-ec28-4938-ad0e-0aa4aa1965ec
   alterId: 0
   cipher: auto
@@ -3637,7 +3620,7 @@ proxies:
 - name: '❌Düsseldorf-GetAFreeNode.com #2'
   type: vmess
   server: 5.83.150.108
-  port: 36495
+  port: 32198
   uuid: 27104fae-f047-4993-902a-9368d8a3e9bc
   alterId: 0
   cipher: auto
@@ -3652,7 +3635,7 @@ proxies:
 - name: '❌Düsseldorf-GetAFreeNode.com #3'
   type: vmess
   server: 5.83.150.108
-  port: 39302
+  port: 39409
   uuid: 4f3cfda3-a255-40eb-8801-71f9fffb19d6
   alterId: 0
   cipher: auto
@@ -3667,7 +3650,7 @@ proxies:
 - name: '❌Düsseldorf-GetAFreeNode.com #4'
   type: vmess
   server: 5.83.150.108
-  port: 45887
+  port: 56308
   uuid: 6d600864-32da-49fd-baf4-7df051762454
   alterId: 0
   cipher: auto
@@ -3682,7 +3665,7 @@ proxies:
 - name: '❌Düsseldorf-GetAFreeNode.com #5'
   type: vmess
   server: 5.83.150.108
-  port: 23512
+  port: 47819
   uuid: 9631096d-3032-4942-9446-bdf12665682b
   alterId: 0
   cipher: auto
@@ -3697,7 +3680,7 @@ proxies:
 - name: '❌Düsseldorf-GetAFreeNode.com #6'
   type: vmess
   server: 5.83.150.108
-  port: 22413
+  port: 62154
   uuid: b01d1e26-2f84-48da-88a1-1d06a77857f3
   alterId: 0
   cipher: auto
@@ -3712,7 +3695,7 @@ proxies:
 - name: '❌Düsseldorf-GetAFreeNode.com #7'
   type: vmess
   server: 5.83.150.108
-  port: 30477
+  port: 44069
   uuid: e1cc26b3-df0b-477b-afb0-53659a25e978
   alterId: 0
   cipher: auto
@@ -3727,7 +3710,7 @@ proxies:
 - name: ❌Moscow-GetAFreeNode
   type: vmess
   server: 94.156.181.190
-  port: 22082
+  port: 15219
   uuid: 4f3cfda3-a255-40eb-8801-71f9fffb19d6
   alterId: 0
   cipher: auto
@@ -3742,7 +3725,7 @@ proxies:
 - name: '❌Moscow-GetAFreeNode #2'
   type: vmess
   server: 94.156.181.190
-  port: 45564
+  port: 25325
   uuid: 6d600864-32da-49fd-baf4-7df051762454
   alterId: 0
   cipher: auto
@@ -3757,7 +3740,7 @@ proxies:
 - name: '❌Moscow-GetAFreeNode #3'
   type: vmess
   server: 94.156.181.190
-  port: 58258
+  port: 52655
   uuid: 9631096d-3032-4942-9446-bdf12665682b
   alterId: 0
   cipher: auto
@@ -3772,8 +3755,23 @@ proxies:
 - name: '❌Moscow-GetAFreeNode #4'
   type: vmess
   server: 94.156.181.190
-  port: 59216
+  port: 24495
   uuid: 254551f6-ec28-4938-ad0e-0aa4aa1965ec
+  alterId: 0
+  cipher: auto
+  tls: true
+  skip-cert-verify: true
+  network: ws
+  ws-opts:
+    path: /speedtest
+    headers:
+      Host: imafake.locker
+  servername: imafake.locker
+- name: '❌Moscow-GetAFreeNode #5'
+  type: vmess
+  server: 94.156.181.190
+  port: 36525
+  uuid: 27104fae-f047-4993-902a-9368d8a3e9bc
   alterId: 0
   cipher: auto
   tls: true
@@ -4039,20 +4037,6 @@ proxies:
   sni: 45.32.28.232
   skip-cert-verify: true
   udp: true
-- name: 西班牙+V2CROSS.COM
-  type: trojan
-  server: 80.173.230.196
-  port: 26279
-  password: a5inYFE=JGV89+hjxIqgDp1tcWBd6
-  sni: 80.173.230.196
-  skip-cert-verify: true
-  udp: true
-- name: 广东省云浮市+移动
-  type: ss
-  server: ldu.izenny.com
-  port: 18140
-  cipher: chacha20-ietf-poly1305
-  password: c6d61cd1-d3dc-405e-afb2-d67815f4e4da
 - name: 冰岛+V2CROSS.COM
   type: trojan
   server: 37.235.49.209
@@ -4071,24 +4055,23 @@ proxies:
   tls: false
   skip-cert-verify: true
   network: tcp
-- name: 以色列 V2CROSS.COM
-  type: vmess
-  server: 149.88.95.94
-  port: 35760
-  uuid: 17e96792-d8c3-4741-9c34-e5d1c11d754f
-  alterId: 0
-  cipher: auto
-  tls: false
-  skip-cert-verify: true
-  network: none
-- name: 广东省+移动
+- name: 俄罗斯+V2CROSS.COM
   type: trojan
-  server: a12.taipeicitygovernment.org.ua
-  port: 3462
-  password: 736cd94d-7b94-3e44-8106-3419f64eaf09
-  sni: 45.32.28.232
+  server: 212.193.18.144
+  port: 36158
+  password: ZblhWr0mqMakCPg.N
+  sni: ya.ru
   skip-cert-verify: true
   udp: true
+- name: 瑞典+V2CROSS.COM
+  type: vless
+  server: dd.openaccessnode.com
+  port: 50
+  uuid: 75193bef-8d8f-e823-41e0-2dd083dc1399
+  tls: false
+  network: tcp
+  udp: true
+  encryption: none
 - name: 🇮🇱 以色列 V2CROSS.COM
   type: vmess
   server: 149.88.95.94
@@ -4238,7 +4221,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 伊朗_121320007
   type: vmess
   server: 158.58.188.21
@@ -4270,7 +4253,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 卢森堡_121320001
   type: vmess
   server: 107.189.29.193
@@ -4280,7 +4263,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 印度_121320001
   type: vmess
   server: 103.114.201.143
@@ -4290,7 +4273,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 印度_121320002
   type: vmess
   server: 103.114.201.44
@@ -4428,7 +4411,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 新加坡_121320004
   type: vmess
   server: 207.148.77.215
@@ -4620,7 +4603,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 日本_121320051
   type: vmess
   server: 45.88.43.143
@@ -4630,7 +4613,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 日本_121320054
   type: vmess
   server: 45.88.43.163
@@ -4640,7 +4623,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 未知_121320001
   type: vmess
   server: 2876be99-f.3nvx.com
@@ -5137,7 +5120,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 波兰_121320026
   type: vmess
   server: 94.131.96.137
@@ -5173,7 +5156,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 澳门_121320001
   type: vmess
   server: 163.53.246.239
@@ -5183,7 +5166,7 @@ proxies:
   cipher: auto
   tls: false
   skip-cert-verify: true
-  network: ''
+  network: tcp
 - name: 瑞典_121320007
   type: vmess
   server: se1-vmess.sshmax.xyz
@@ -5518,318 +5501,330 @@ proxies:
   password: df7bed3c-06eb-11f0-8ebc-f23c93141fad
   skip-cert-verify: true
   sni: '🔒 [By EbraSha] '
-- name: '🔒 [By EbraSha] #2'
+- name: '🔒 [By EbraSha] #180'
   type: ss
-  server: 171.22.114.248
-  port: 27394
-  cipher: Fw^v9_~_y
-  password: ''
-- name: '🔒 [By EbraSha] #3'
+  server: 13.49.228.30
+  port: 8080
+  cipher: 2022-blake3-chacha20-poly1305
+  password: 3vzi7ehQcOEKQtrxD9bfbKBJqduZyJOvohGuLlfDIS0=
+- name: '🔒 [By EbraSha] #181'
   type: ss
-  server: fra.iranbuildings.com
-  port: 2096
-  cipher: _
-  password: "un6>kww޴\x7F\x1D"
-- name: '🔒 [By EbraSha] #4'
+  server: 78.38.246.150
+  port: 8446
+  cipher: 2022-blake3-aes-128-gcm
+  password: 6e3e43f4-12b7-42f1-8b93-41a152d5612d
+- name: '🔒 [By EbraSha] #182'
   type: ss
-  server: 104.24.148.184
+  server: zz.xn--2vxn29amga.com
+  port: 8094
+  cipher: 2022-blake3-aes-128-gcm
+  password: ODI0ZTkxZDkxM2E0Y2UwMQ==:Y2MwNjdmYzUtYTIxYy00NA==
+- name: '🔒 [By EbraSha] #183'
+  type: ss
+  server: xxx.90908585.ir
+  port: 8080
+  cipher: 2022-blake3-aes-128-gcm
+  password: XV+umcZHRuSpfrigrIbOloRZZ7rMFZTASosT7FrbqCY=:A7xAzHKaAILMfIeQvXAbI6qQzT5zQGSP5WvxlZlwZQM=
+- name: '🔒 [By EbraSha] #184'
+  type: ss
+  server: zz.xn--mes91t7ofgnw.com
+  port: 8081
+  cipher: 2022-blake3-aes-128-gcm
+  password: Yzg1YmEyOWM5YjgyODg1Yg==:MGJmNTg4OWQtN2ZjMi00Yw==
+- name: '🔒 [By EbraSha] #185'
+  type: ss
+  server: zz.xn--2vxn29amga.com
+  port: 8091
+  cipher: 2022-blake3-aes-128-gcm
+  password: ZWFjNWM2MTViMjA5ZDkzYw==:Y2MwNjdmYzUtYTIxYy00NA==
+- name: '🔒 [By EbraSha] #186'
+  type: ss
+  server: 95.217.37.166
+  port: 2020
+  cipher: 2022-blake3-aes-128-gcm
+  password: ietXbfq03Vh8XCaxyCDIEg==
+- name: '🔒 [By EbraSha] #187'
+  type: ss
+  server: 51.195.110.193
+  port: 8389
+  cipher: 2022-blake3-aes-256-gcm
+  password: /J9wVeERWKeRMJjmYz3pIdkfvruFr1o0/0J3VL9MK4c=
+- name: '🔒 [By EbraSha] #188'
+  type: ss
+  server: 89.44.242.222
+  port: 18810
+  cipher: 2022-blake3-aes-256-gcm
+  password: 3De8AiLbBvDXJ4GhFgGxcAFobJB5+J6QKWT7dM4XwHU=:zGvhp6NE0JvzRiF4r9DgJpQwcnxELqTQIGp7ssdqWmI=
+- name: '🔒 [By EbraSha] #189'
+  type: ss
+  server: 80.209.239.158
+  port: 53755
+  cipher: 2022-blake3-aes-256-gcm
+  password: GWMb4QpG+o2dyG7QOzi/lazj8v5E1oWiVL/T3CLHU4I=:5LASL0kzPtz8UmJmeh+SkzJo/SPt4aNC+7MFntcIW5E=
+- name: '🔒 [By EbraSha] #190'
+  type: ss
+  server: 91.107.242.241
+  port: 10145
+  cipher: 2022-blake3-aes-256-gcm
+  password: FyG6EljoVeDyC6vUG1uLjzD1rkgZs44GyD5Y5shI664=:T5MXIFk7XP+0ioF9BZr/SN5UN3INthCHA4AoQI4QzQ0=
+- name: '🔒 [By EbraSha] #191'
+  type: ss
+  server: 91.107.242.241
+  port: 10147
+  cipher: 2022-blake3-aes-256-gcm
+  password: FyG6EljoVeDyC6vUG1uLjzD1rkgZs44GyD5Y5shI664=:T5MXIFk7XP+0ioF9BZr/SN5UN3INthCHA4AoQI4QzQ0=
+- name: '🔒 [By EbraSha] #192'
+  type: ss
+  server: 91.107.242.241
+  port: 10149
+  cipher: 2022-blake3-aes-256-gcm
+  password: FyG6EljoVeDyC6vUG1uLjzD1rkgZs44GyD5Y5shI664=:T5MXIFk7XP+0ioF9BZr/SN5UN3INthCHA4AoQI4QzQ0=
+- name: '🔒 [By EbraSha] #193'
+  type: ss
+  server: 109.122.201.178
+  port: 2087
+  cipher: 2022-blake3-aes-256-gcm
+  password: L5QW1bB50BvNxgWDBIlztFXcsqA67OWNHn0KG5MCY20=:MHtT44AELwWhUEOXZP+YwT539YT16XEV4tYTVk35m8U=
+- name: '🔒 [By EbraSha] #194'
+  type: ss
+  server: 139.162.72.96
+  port: 22060
+  cipher: 2022-blake3-aes-256-gcm
+  password: SyDAK72oD2eySsaIQe7D9gXHtOdfiR7/9dEhTOl80eM=:Yl9CJk3IJF64Fc1eso0mlsNiqrNiOZGhCDciNVmISHE=
+- name: '🔒 [By EbraSha] #195'
+  type: ss
+  server: 51.178.85.208
+  port: 8389
+  cipher: 2022-blake3-aes-256-gcm
+  password: PaCXkg97k9k9a18rS78ke9whdqMBCqmXrpTNfEYNJYg=
+- name: '🔒 [By EbraSha] #196'
+  type: ss
+  server: 57.128.191.90
+  port: 8388
+  cipher: 2022-blake3-aes-256-gcm
+  password: R532mRBv3acPAGakeITDQWJRxyym0pxqvzJPmWCFwHU=
+- name: '🔒 [By EbraSha] #197'
+  type: ss
+  server: 212.118.42.181
+  port: 9260
+  cipher: 2022-blake3-aes-256-gcm
+  password: X0xJs7Bn4yXxePbQhfsKqc0CiAi5a7tcV6GFPCyYWn4=:LiWM+H+SWMrNnYZiOjpmOzWMW0BMYCBrLC57O5Ub+Ns=
+- name: '🔒 [By EbraSha] #198'
+  type: ss
+  server: 51.38.141.210
+  port: 8388
+  cipher: 2022-blake3-aes-256-gcm
+  password: dCmwaTQxKk6QAMzFnQdHkRhxHF1duniBX4OV9xIzLEE=
+- name: '🔒 [By EbraSha] #199'
+  type: ss
+  server: 51.38.141.210
+  port: 8389
+  cipher: 2022-blake3-aes-256-gcm
+  password: dCmwaTQxKk6QAMzFnQdHkRhxHF1duniBX4OV9xIzLEE=
+- name: '🔒 [By EbraSha] #200'
+  type: ss
+  server: 51.38.141.210
+  port: 8390
+  cipher: 2022-blake3-aes-256-gcm
+  password: dCmwaTQxKk6QAMzFnQdHkRhxHF1duniBX4OV9xIzLEE=
+- name: '🔒 [By EbraSha] #201'
+  type: ss
+  server: 57.131.42.19
+  port: 8389
+  cipher: 2022-blake3-aes-256-gcm
+  password: et1sgh1iQaWzsw201JX2eexN1Ai6QmIGcZIlvlC5L54=
+- name: '🔒 [By EbraSha] #202'
+  type: ss
+  server: 57.131.41.129
+  port: 8390
+  cipher: 2022-blake3-aes-256-gcm
+  password: etU8/fvCVPaqmKkXV6bX8v8ULI4Fch+EKvg19MoETLk=
+- name: '🔒 [By EbraSha] #203'
+  type: ss
+  server: 188.34.194.165
   port: 80
-  cipher: "W\eum"
-  password: ;{y<{y9
-- name: '🔒 [By EbraSha] #5'
+  cipher: 2022-blake3-aes-256-gcm
+  password: pZ4+ZusaghoksCUR75L2TVQ0zFPugWwgpuDpyXzxmcc=:T/AUs/pwM3AdqwXln0rP0YiJt7eqM+gHnUAlUJlQaDA=
+- name: '🔒 [By EbraSha] #204'
   type: ss
-  server: 85.192.48.50
+  server: 85.208.186.162
+  port: 56363
+  cipher: 2022-blake3-aes-256-gcm
+  password: rQMNBbohiNW85LBlI9rxS+e0HiQ5rxsO8RJI0LbVXtE=:T9B452dhaZIQcFBcRBnP+pxJB29J5IiY/bC1vgGiock=
+- name: '🔒 [By EbraSha] #205'
+  type: ss
+  server: 139.162.102.16
+  port: 46965
+  cipher: 2022-blake3-aes-256-gcm
+  password: wiZjkLiu7ahGwLNDghgYXtz0FHV0lCAqrlzjTYTmr/c=:demEkymUkRvG63Ed7F2b1P6pTuGAA90I0LfKxgbUFd8=
+- name: '🔒 [By EbraSha] #210'
+  type: ss
+  server: 5.188.36.6
+  port: 4619
+  cipher: chacha20
+  password: v2kNLYJFva
+- name: '🔒 [By EbraSha] #211'
+  type: ss
+  server: 38.244.137.202
+  port: 45380
+  cipher: chacha20-ietf-poly1305
+  password: 43fXf1uMKbIKkxoNYGQMtt
+- name: '🔒 [By EbraSha] #212'
+  type: ss
+  server: 154.26.132.38
+  port: 16922
+  cipher: chacha20-ietf-poly1305
+  password: 42d2b47181a32de7
+- name: '🔒 [By EbraSha] #213'
+  type: ss
+  server: 107.191.63.241
+  port: 30665
+  cipher: chacha20-ietf-poly1305
+  password: 44fe4b7d-cd48-45fc-a036-60ea40e4a96c
+- name: '🔒 [By EbraSha] #214'
+  type: ss
+  server: 37.60.250.243
+  port: 20558
+  cipher: chacha20-ietf-poly1305
+  password: 455c15bc175b4d74
+- name: '🔒 [By EbraSha] #215'
+  type: ss
+  server: free.node.kk-proxy.pro
+  port: 24960
+  cipher: chacha20-ietf-poly1305
+  password: 45cdaeb3-7fce-49ae-a12c-3879d9cab756
+- name: '🔒 [By EbraSha] #216'
+  type: ss
+  server: gdgs.tarioblink.me
+  port: 30003
+  cipher: chacha20-ietf-poly1305
+  password: 4619d5a0-258a-48f4-98bf-88843d5d7a83
+- name: '🔒 [By EbraSha] #217'
+  type: ss
+  server: 154.205.145.37
+  port: 11201
+  cipher: chacha20-ietf-poly1305
+  password: 47509ba3679b9df9
+- name: '🔒 [By EbraSha] #218'
+  type: ss
+  server: hz.niaoyun.vip
+  port: 45372
+  cipher: chacha20-ietf-poly1305
+  password: 48dd925d-5e9e-49ee-969d-088e5f1acea1
+- name: '🔒 [By EbraSha] #219'
+  type: ss
+  server: hz.niaoyun.vip
+  port: 45398
+  cipher: chacha20-ietf-poly1305
+  password: 48dd925d-5e9e-49ee-969d-088e5f1acea1
+- name: '🔒 [By EbraSha] #220'
+  type: ss
+  server: 51.79.161.232
   port: 443
-  cipher: "g\x1Fm_"
-  password: '}~yvi^n'
-- name: '🔒 [By EbraSha] #6'
+  cipher: chacha20-ietf-poly1305
+  password: 4Hub2f9JyhECyAq2Opm0NS
+- name: '🔒 [By EbraSha] #221'
   type: ss
-  server: 45.63.116.176
-  port: 27773
-  cipher: ӝ
-  password: "F7s:ٷm\x1D"
-- name: '🔒 [By EbraSha] #7'
+  server: uk.london1.vpntester.net
+  port: 15256
+  cipher: chacha20-ietf-poly1305
+  password: 4SGLMZ7Z83fN
+- name: '🔒 [By EbraSha] #222'
   type: ss
-  server: 13.36.139.6
-  port: 22224
-  cipher: "ӞuN|ݚs\x1FϽ{ٽ\x7F"
-  password: ^
-- name: '🔒 [By EbraSha] #8'
+  server: 170.130.31.114
+  port: 8389
+  cipher: chacha20-ietf-poly1305
+  password: 4W2SJmdKUMJjjkVfRDdh
+- name: '🔒 [By EbraSha] #223'
   type: ss
-  server: 13.36.247.35
-  port: 22224
-  cipher: "ӞuN|ݚs\x1FϽ{ٽ\x7F"
-  password: ^
-- name: '🔒 [By EbraSha] #9'
+  server: 183.240.222.80
+  port: 2001
+  cipher: chacha20-ietf-poly1305
+  password: 4ca7c2b3-5667-44b0-8ab2-b21a6f887b32
+- name: '🔒 [By EbraSha] #224'
   type: ss
-  server: 13.37.160.116
-  port: 22224
-  cipher: "ӞuN|ݚs\x1FϽ{ٽ\x7F"
-  password: ^
-- name: '🔒 [By EbraSha] #10'
+  server: 151.242.251.144
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: 4a2rfixophdjffa8KVA4Aa
+- name: '🔒 [By EbraSha] #225'
   type: ss
-  server: 13.38.147.171
-  port: 22224
-  cipher: "ӞuN|ݚs\x1FϽ{ٽ\x7F"
-  password: ^
-- name: '🔒 [By EbraSha] #11'
+  server: 193.29.139.157
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: 4a2rfixophdjffa8KVA4Aa
+- name: '🔒 [By EbraSha] #226'
   type: ss
-  server: 13.39.239.251
-  port: 22224
-  cipher: "ӞuN|ݚs\x1FϽ{ٽ\x7F"
-  password: ^
-- name: '🔒 [By EbraSha] #12'
+  server: 193.29.139.162
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: 4a2rfixophdjffa8KVA4Aa
+- name: '🔒 [By EbraSha] #227'
   type: ss
-  server: 15.188.153.82
-  port: 22224
-  cipher: "ӞuN|ݚs\x1FϽ{ٽ\x7F"
-  password: ^
-- name: '🔒 [By EbraSha] #13'
+  server: 193.29.139.164
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: 4a2rfixophdjffa8KVA4Aa
+- name: '🔒 [By EbraSha] #228'
   type: ss
-  server: 15.236.150.206
-  port: 22224
-  cipher: "ӞuN|ݚs\x1FϽ{ٽ\x7F"
-  password: ^
-- name: '🔒 [By EbraSha] #14'
+  server: 193.29.139.206
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: 4a2rfixophdjffa8KVA4Aa
+- name: '🔒 [By EbraSha] #229'
   type: ss
-  server: 18.193.13.65
-  port: 22224
-  cipher: "ӞuN|ݚs\x1FϽ{ٽ\x7F"
-  password: ^
-- name: '🔒 [By EbraSha] #15'
+  server: 45.158.171.132
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: 4a2rfixophdjffa8KVA4Aa
+- name: '🔒 [By EbraSha] #230'
   type: ss
-  server: 18.198.111.78
-  port: 22224
-  cipher: "ӞuN|ݚs\x1FϽ{ٽ\x7F"
-  password: ^
-- name: '🔒 [By EbraSha] #16'
+  server: 45.158.171.141
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: 4a2rfixophdjffa8KVA4Aa
+- name: '🔒 [By EbraSha] #231'
   type: ss
-  server: 3.124.16.18
-  port: 22224
-  cipher: "ӞuN|ݚs\x1FϽ{ٽ\x7F"
-  password: ^
-- name: '🔒 [By EbraSha] #17'
+  server: 45.158.171.151
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: 4a2rfixophdjffa8KVA4Aa
+- name: '🔒 [By EbraSha] #232'
   type: ss
-  server: 3.79.132.34
-  port: 22224
-  cipher: "ӞuN|ݚs\x1FϽ{ٽ\x7F"
-  password: ^
-- name: '🔒 [By EbraSha] #18'
+  server: 45.87.175.154
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: 4a2rfixophdjffa8KVA4Aa
+- name: '🔒 [By EbraSha] #233'
   type: ss
-  server: 35.157.86.22
-  port: 22224
-  cipher: "ӞuN|ݚs\x1FϽ{ٽ\x7F"
-  password: ^
-- name: '🔒 [By EbraSha] #19'
+  server: 45.87.175.157
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: 4a2rfixophdjffa8KVA4Aa
+- name: '🔒 [By EbraSha] #234'
   type: ss
-  server: 35.181.70.2
-  port: 22224
-  cipher: "ӞuN|ݚs\x1FϽ{ٽ\x7F"
-  password: ^
-- name: '🔒 [By EbraSha] #20'
+  server: 45.87.175.164
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: 4a2rfixophdjffa8KVA4Aa
+- name: '🔒 [By EbraSha] #235'
   type: ss
-  server: 63.177.173.183
-  port: 22224
-  cipher: "ӞuN|ݚs\x1FϽ{ٽ\x7F"
-  password: ^
-- name: '🔒 [By EbraSha] #21'
+  server: 45.87.175.166
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: 4a2rfixophdjffa8KVA4Aa
+- name: '🔒 [By EbraSha] #236'
   type: ss
-  server: 63.178.100.140
-  port: 22224
-  cipher: "ӞuN|ݚs\x1FϽ{ٽ\x7F"
-  password: ^
-- name: '🔒 [By EbraSha] #22'
+  server: 45.87.175.171
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: 4a2rfixophdjffa8KVA4Aa
+- name: '🔒 [By EbraSha] #237'
   type: ss
-  server: 63.179.40.205
-  port: 22224
-  cipher: "ӞuN|ݚs\x1FϽ{ٽ\x7F"
-  password: ^
-- name: '🔒 [By EbraSha] #23'
-  type: ss
-  server: 94.101.178.163
-  port: 2086
-  cipher: ӯzw|]|{
-  password: "\x7Fۭ۽i}"
-- name: '🔒 [By EbraSha] #24'
-  type: ss
-  server: 85.9.200.197
-  port: 26143
-  cipher: "ӷz<s\x7F>"
-  password: w|
-- name: '🔒 [By EbraSha] #25'
-  type: ss
-  server: servo.prooatat.xyz
-  port: 35079
-  cipher: "^\x7F\x1Fo"
-  password: "㏽\x7FG~g[׵߭\x1F"
-- name: '🔒 [By EbraSha] #26'
-  type: ss
-  server: 104.17.147.22
-  port: 443
-  cipher: ǟ}o4_ח}
-  password: ':'
-- name: '🔒 [By EbraSha] #27'
-  type: ss
-  server: ru.maviks.eu
-  port: 443
-  cipher: ѯxm9MZ
-  password: ߏ{>uGtן
-- name: '🔒 [By EbraSha] #28'
-  type: ss
-  server: 91.99.181.225
-  port: 443
-  cipher: "\e\x1AO5"
-  password: '>u|ٯun4'
-- name: '🔒 [By EbraSha] #29'
-  type: ss
-  server: 91.99.8.201
-  port: 443
-  cipher: "\e\x1AO5"
-  password: '>u|ٯun4'
-- name: '🔒 [By EbraSha] #30'
-  type: ss
-  server: 104.19.144.33
-  port: 8443
-  cipher: ;fg
-  password: =߯t;ǚ
-- name: '🔒 [By EbraSha] #31'
-  type: ss
-  server: chatgpt.com
-  port: 443
-  cipher: w
-  password: "{_o>G9\x1D"
-- name: '🔒 [By EbraSha] #32'
-  type: ss
-  server: 172.66.46.246
-  port: 443
-  cipher: wW5
-  password: wo{]v
-- name: '🔒 [By EbraSha] #33'
-  type: ss
-  server: 104.21.112.1
-  port: 443
-  cipher: "\x1CMx4"
-  password: o>w{
-- name: '🔒 [By EbraSha] #34'
-  type: ss
-  server: 104.21.32.1
-  port: 443
-  cipher: "\x1CMx4"
-  password: o>w{
-- name: '🔒 [By EbraSha] #35'
-  type: ss
-  server: 104.21.48.1
-  port: 443
-  cipher: "\x1CMx4"
-  password: o>w{
-- name: '🔒 [By EbraSha] #36'
-  type: ss
-  server: 104.21.80.1
-  port: 443
-  cipher: "\x1CMx4"
-  password: o>w{
-- name: '🔒 [By EbraSha] #37'
-  type: ss
-  server: www.speedtest.net
-  port: 443
-  cipher: "\x1CMx4"
-  password: o>w{
-- name: '🔒 [By EbraSha] #38'
-  type: ss
-  server: mail.norton-v.cfd
-  port: 1517
-  cipher: M_k
-  password: kw_~s}5qx
-- name: '🔒 [By EbraSha] #39'
-  type: ss
-  server: F1.HaMrAhCoNf.Ir
-  port: 2086
-  cipher: "vy}6_w>}<\x7FG<m"
-  password: ''
-- name: '🔒 [By EbraSha] #40'
-  type: ss
-  server: afrcloud22.mmv.kr
-  port: 443
-  cipher: ׭
-  password: 7s=mӏ>}
-- name: '🔒 [By EbraSha] #41'
-  type: ss
-  server: 152.42.141.126
-  port: 1615
-  cipher: ׾u|GZ<ߚէWs
-  password: kZ
-- name: '🔒 [By EbraSha] #42'
-  type: ss
-  server: hajlab.ucdavis.edu
-  port: 80
-  cipher: ծ齶
-  password: "<o~Mu\x1Fx"
-- name: '🔒 [By EbraSha] #43'
-  type: ss
-  server: 172.64.157.124
-  port: 80
-  cipher: "է������;��5{o�����\x1C��\x1F�y"
-  password: "է������;��5{o�����\x1C��\x1F�y"
-- name: '🔒 [By EbraSha] #44'
-  type: ss
-  server: 172.66.40.99
-  port: 8880
-  cipher: վN]k
-  password: '}w>:w޴'
-- name: '🔒 [By EbraSha] #45'
-  type: ss
-  server: 92.53.107.193
-  port: 27129
-  cipher: ''
-  password: z^}<~}y
-- name: '🔒 [By EbraSha] #46'
-  type: ss
-  server: 167.235.68.235
-  port: 8880
-  cipher: '7'
-  password: "o4珽\x7F>NG٭"
-- name: '🔒 [By EbraSha] #47'
-  type: ss
-  server: 188.132.183.140
-  port: 443
-  cipher: ']ۗ'
-  password: "o\x1CuFۆ<"
-- name: '🔒 [By EbraSha] #48'
-  type: ss
-  server: 151.101.130.216
-  port: 80
-  cipher: ^zZs
-  password: ok>i{ݚ
-- name: '🔒 [By EbraSha] #49'
-  type: ss
-  server: 151.101.194.216
-  port: 80
-  cipher: ^zZs
-  password: ok>i{ݚ
-- name: '🔒 [By EbraSha] #50'
-  type: ss
-  server: 151.101.66.216
-  port: 80
-  cipher: ^zZs
-  password: ok>i{ݚ
-- name: '🔒 [By EbraSha] #51'
-  type: ss
-  server: 167.82.85.155
-  port: 80
-  cipher: "۝�\x7F���׹��7߯�y�~�\x1Du��u�5"
-  password: "۝�\x7F���׹��7߯�y�~�\x1Du��u�5"
-- name: '🔒 [By EbraSha] #52'
-  type: ss
-  server: 146.75.74.62
-  port: 443
-  cipher: ۞
-  password: v;ϼqq~
-- name: '🔒 [By EbraSha] #53'
-  type: ss
-  server: 151.101.194.219
-  port: 80
-  cipher: ۽5ޞW|ӟg7M
-  password: s};
+  server: 45.87.175.178
+  port: 8080
+  cipher: chacha20-ietf-poly1305
+  password: 4a2rfixophdjffa8KVA4Aa
 proxy-groups:
 - name: 🚀 选择代理
   type: select
@@ -5924,7 +5919,6 @@ proxy-groups:
   - '🇺🇸 美国 CloudFlare节点 #6'
   - '🇺🇸 美国 CloudFlare节点 #7'
   - 🇨🇦 加拿大 V2CROSS.COM
-  - '🇺🇸 美国 CloudFlare节点 #8'
   - 🇺🇸 _US_美国
   - 🇺🇸_US_美国
   - '🇺🇸_US_美国 #2'
@@ -6093,7 +6087,7 @@ proxy-groups:
   - 法国 国际航空电讯集团公司(SITA)
   - '法国 国际航空电讯集团公司(SITA) #2'
   - 🇺🇸US-77.83.141.171-1131
-  - 🟣🔥+Channel+Server+Free+@Farah_VPN
+  - t.me/v2Line | Free | 3357 | Türkiye
   - t.me/v2Line | Free | 3368 | Canada
   - '@v2rayngzendegimamad🕊️'
   - '@v2rayngzendegimamad🕊️ #2'
@@ -6103,6 +6097,7 @@ proxy-groups:
   - 'channel : @freedomofinfor'
   - '@v2rayngzendegimamad🕊️ #5'
   - '@v2rayngzendegimamad🕊️ #6'
+  - 8514343124_b8dc-78.12GB📊-29D,21H⏳
   - 🇰🇷 @FreakConfig
   - '%40FREE_VPN02-FREE_VPN02'
   - '🇺🇸 US | VMESS | @freev2rays #1'
@@ -6131,7 +6126,6 @@ proxy-groups:
   - USA01-ipv6
   - '>>@DailyV2RY::FR::FR'
   - '>>@DailyV2RY::GB::GB::XX::GB::GB::XX::GB::XX'
-  - '>>@oneclickvpnkeys::US::US'
   - ❌Düsseldorf-GetAFreeNode.com
   - '❌Düsseldorf-GetAFreeNode.com #2'
   - '❌Düsseldorf-GetAFreeNode.com #3'
@@ -6143,6 +6137,7 @@ proxy-groups:
   - '❌Moscow-GetAFreeNode #2'
   - '❌Moscow-GetAFreeNode #3'
   - '❌Moscow-GetAFreeNode #4'
+  - '❌Moscow-GetAFreeNode #5'
   - AE12｜未知 (None)｜非常安全
   - PL18｜机房｜低风险
   - SE2｜机房｜低风险
@@ -6173,12 +6168,10 @@ proxy-groups:
   - 新加坡2|@ripaojiedian
   - 新加坡3|@ripaojiedian
   - 新加坡4|@ripaojiedian
-  - 西班牙+V2CROSS.COM
-  - 广东省云浮市+移动
   - 冰岛+V2CROSS.COM
   - 伊朗 V2CROSS.COM
-  - 以色列 V2CROSS.COM
-  - 广东省+移动
+  - 俄罗斯+V2CROSS.COM
+  - 瑞典+V2CROSS.COM
   - 🇮🇱 以色列 V2CROSS.COM
   - 🇨🇳 广东省 电信
   - 🇲🇾_MY_马来西亚
@@ -6291,58 +6284,60 @@ proxy-groups:
   - 越南_121320001
   - 韩国_121320001
   - 🔒 [By EbraSha]
-  - '🔒 [By EbraSha] #2'
-  - '🔒 [By EbraSha] #3'
-  - '🔒 [By EbraSha] #4'
-  - '🔒 [By EbraSha] #5'
-  - '🔒 [By EbraSha] #6'
-  - '🔒 [By EbraSha] #7'
-  - '🔒 [By EbraSha] #8'
-  - '🔒 [By EbraSha] #9'
-  - '🔒 [By EbraSha] #10'
-  - '🔒 [By EbraSha] #11'
-  - '🔒 [By EbraSha] #12'
-  - '🔒 [By EbraSha] #13'
-  - '🔒 [By EbraSha] #14'
-  - '🔒 [By EbraSha] #15'
-  - '🔒 [By EbraSha] #16'
-  - '🔒 [By EbraSha] #17'
-  - '🔒 [By EbraSha] #18'
-  - '🔒 [By EbraSha] #19'
-  - '🔒 [By EbraSha] #20'
-  - '🔒 [By EbraSha] #21'
-  - '🔒 [By EbraSha] #22'
-  - '🔒 [By EbraSha] #23'
-  - '🔒 [By EbraSha] #24'
-  - '🔒 [By EbraSha] #25'
-  - '🔒 [By EbraSha] #26'
-  - '🔒 [By EbraSha] #27'
-  - '🔒 [By EbraSha] #28'
-  - '🔒 [By EbraSha] #29'
-  - '🔒 [By EbraSha] #30'
-  - '🔒 [By EbraSha] #31'
-  - '🔒 [By EbraSha] #32'
-  - '🔒 [By EbraSha] #33'
-  - '🔒 [By EbraSha] #34'
-  - '🔒 [By EbraSha] #35'
-  - '🔒 [By EbraSha] #36'
-  - '🔒 [By EbraSha] #37'
-  - '🔒 [By EbraSha] #38'
-  - '🔒 [By EbraSha] #39'
-  - '🔒 [By EbraSha] #40'
-  - '🔒 [By EbraSha] #41'
-  - '🔒 [By EbraSha] #42'
-  - '🔒 [By EbraSha] #43'
-  - '🔒 [By EbraSha] #44'
-  - '🔒 [By EbraSha] #45'
-  - '🔒 [By EbraSha] #46'
-  - '🔒 [By EbraSha] #47'
-  - '🔒 [By EbraSha] #48'
-  - '🔒 [By EbraSha] #49'
-  - '🔒 [By EbraSha] #50'
-  - '🔒 [By EbraSha] #51'
-  - '🔒 [By EbraSha] #52'
-  - '🔒 [By EbraSha] #53'
+  - '🔒 [By EbraSha] #180'
+  - '🔒 [By EbraSha] #181'
+  - '🔒 [By EbraSha] #182'
+  - '🔒 [By EbraSha] #183'
+  - '🔒 [By EbraSha] #184'
+  - '🔒 [By EbraSha] #185'
+  - '🔒 [By EbraSha] #186'
+  - '🔒 [By EbraSha] #187'
+  - '🔒 [By EbraSha] #188'
+  - '🔒 [By EbraSha] #189'
+  - '🔒 [By EbraSha] #190'
+  - '🔒 [By EbraSha] #191'
+  - '🔒 [By EbraSha] #192'
+  - '🔒 [By EbraSha] #193'
+  - '🔒 [By EbraSha] #194'
+  - '🔒 [By EbraSha] #195'
+  - '🔒 [By EbraSha] #196'
+  - '🔒 [By EbraSha] #197'
+  - '🔒 [By EbraSha] #198'
+  - '🔒 [By EbraSha] #199'
+  - '🔒 [By EbraSha] #200'
+  - '🔒 [By EbraSha] #201'
+  - '🔒 [By EbraSha] #202'
+  - '🔒 [By EbraSha] #203'
+  - '🔒 [By EbraSha] #204'
+  - '🔒 [By EbraSha] #205'
+  - '🔒 [By EbraSha] #210'
+  - '🔒 [By EbraSha] #211'
+  - '🔒 [By EbraSha] #212'
+  - '🔒 [By EbraSha] #213'
+  - '🔒 [By EbraSha] #214'
+  - '🔒 [By EbraSha] #215'
+  - '🔒 [By EbraSha] #216'
+  - '🔒 [By EbraSha] #217'
+  - '🔒 [By EbraSha] #218'
+  - '🔒 [By EbraSha] #219'
+  - '🔒 [By EbraSha] #220'
+  - '🔒 [By EbraSha] #221'
+  - '🔒 [By EbraSha] #222'
+  - '🔒 [By EbraSha] #223'
+  - '🔒 [By EbraSha] #224'
+  - '🔒 [By EbraSha] #225'
+  - '🔒 [By EbraSha] #226'
+  - '🔒 [By EbraSha] #227'
+  - '🔒 [By EbraSha] #228'
+  - '🔒 [By EbraSha] #229'
+  - '🔒 [By EbraSha] #230'
+  - '🔒 [By EbraSha] #231'
+  - '🔒 [By EbraSha] #232'
+  - '🔒 [By EbraSha] #233'
+  - '🔒 [By EbraSha] #234'
+  - '🔒 [By EbraSha] #235'
+  - '🔒 [By EbraSha] #236'
+  - '🔒 [By EbraSha] #237'
 - name: 🔰 延迟最低
   type: url-test
   url: https://www.google.com/
@@ -6474,7 +6469,6 @@ proxy-groups:
   - '🇺🇸 美国 CloudFlare节点 #5'
   - '🇺🇸 美国 CloudFlare节点 #6'
   - '🇺🇸 美国 CloudFlare节点 #7'
-  - '🇺🇸 美国 CloudFlare节点 #8'
   - 🇺🇸 _US_美国
   - 🇺🇸_US_美国
   - '🇺🇸_US_美国 #2'
@@ -6627,7 +6621,6 @@ proxy-groups:
   - 美国西部圣何塞2 | 1x_1
   - 🇺🇸US-103.149.145.115-6352
   - USA01-ipv6
-  - '>>@oneclickvpnkeys::US::US'
 - name: 🇸🇬 新加坡
   type: select
   proxies:
@@ -6661,6 +6654,7 @@ proxy-groups:
   - 英国_121320019
   - 英国_121320046
   - 'Server MKH Downloaded: 0.17GB Uploaded: 0.28GB'
+  - 8514343124_b8dc-78.12GB📊-29D,21H⏳
   - '>>@DailyV2RY::GB::GB::XX::GB::GB::XX::GB::XX'
 - name: 🇩🇪 德国
   type: select
@@ -6717,6 +6711,7 @@ proxy-groups:
   - '❌Moscow-GetAFreeNode #2'
   - '❌Moscow-GetAFreeNode #3'
   - '❌Moscow-GetAFreeNode #4'
+  - '❌Moscow-GetAFreeNode #5'
 - name: 🇫🇷 法国
   type: select
   proxies:
@@ -6743,7 +6738,7 @@ proxy-groups:
   - 北美地区 v2rayfree.eu.org
   - 法国 国际航空电讯集团公司(SITA)
   - '法国 国际航空电讯集团公司(SITA) #2'
-  - 🟣🔥+Channel+Server+Free+@Farah_VPN
+  - t.me/v2Line | Free | 3357 | Türkiye
   - t.me/v2Line | Free | 3368 | Canada
   - 'channel : @freedomofinfor'
   - 🇰🇷 @FreakConfig
@@ -6762,6 +6757,7 @@ proxy-groups:
   - '❌Moscow-GetAFreeNode #2'
   - '❌Moscow-GetAFreeNode #3'
   - '❌Moscow-GetAFreeNode #4'
+  - '❌Moscow-GetAFreeNode #5'
 - name: 🇷🇺 俄罗斯
   type: select
   proxies:
@@ -6775,7 +6771,9 @@ proxy-groups:
   - '❌Moscow-GetAFreeNode #2'
   - '❌Moscow-GetAFreeNode #3'
   - '❌Moscow-GetAFreeNode #4'
+  - '❌Moscow-GetAFreeNode #5'
   - RU3｜机房｜低风险
+  - 俄罗斯+V2CROSS.COM
   - 俄罗斯联邦_121320002
 - name: 🇨🇦 加拿大
   type: select
@@ -6812,6 +6810,7 @@ proxy-groups:
   - 🇺🇸 SS-美国-NF解锁自制剧-ChatGPT-TikTok-YouTube-pupas-shirting-unsung.freesocks.work:443
   - 🇺🇸 VMESS-美国-NF解锁自制剧-ChatGPT-TikTok-YouTube-v2ray.codefyinc.com:443
   - 🇺🇸 VMESS-美国>德国-NF解锁印度地区非自制剧-ChatGPT-TikTok-YouTube-support.zoom.us:8080
+  - t.me/v2Line | Free | 3357 | Türkiye
   - t.me/v2Line | Free | 3368 | Canada
   - 'channel : @freedomofinfor'
   - '🇫🇷_FR_法国------------------------------------------必进：【TG全网导航】 1》V2rayN win 下载地址：https://t.me/macwinappchat/242》V2rayNG 安卓 下载地址： https://t.me/macwinappchat/233》V2rayU Mac 下载地址：https://t.me/macwinappchat/254》Ios请使用OneClick 小火箭 或者联系群管理员。 #2'
@@ -6827,58 +6826,60 @@ proxy-groups:
   type: select
   proxies:
   - 🔒 [By EbraSha]
-  - '🔒 [By EbraSha] #2'
-  - '🔒 [By EbraSha] #3'
-  - '🔒 [By EbraSha] #4'
-  - '🔒 [By EbraSha] #5'
-  - '🔒 [By EbraSha] #6'
-  - '🔒 [By EbraSha] #7'
-  - '🔒 [By EbraSha] #8'
-  - '🔒 [By EbraSha] #9'
-  - '🔒 [By EbraSha] #10'
-  - '🔒 [By EbraSha] #11'
-  - '🔒 [By EbraSha] #12'
-  - '🔒 [By EbraSha] #13'
-  - '🔒 [By EbraSha] #14'
-  - '🔒 [By EbraSha] #15'
-  - '🔒 [By EbraSha] #16'
-  - '🔒 [By EbraSha] #17'
-  - '🔒 [By EbraSha] #18'
-  - '🔒 [By EbraSha] #19'
-  - '🔒 [By EbraSha] #20'
-  - '🔒 [By EbraSha] #21'
-  - '🔒 [By EbraSha] #22'
-  - '🔒 [By EbraSha] #23'
-  - '🔒 [By EbraSha] #24'
-  - '🔒 [By EbraSha] #25'
-  - '🔒 [By EbraSha] #26'
-  - '🔒 [By EbraSha] #27'
-  - '🔒 [By EbraSha] #28'
-  - '🔒 [By EbraSha] #29'
-  - '🔒 [By EbraSha] #30'
-  - '🔒 [By EbraSha] #31'
-  - '🔒 [By EbraSha] #32'
-  - '🔒 [By EbraSha] #33'
-  - '🔒 [By EbraSha] #34'
-  - '🔒 [By EbraSha] #35'
-  - '🔒 [By EbraSha] #36'
-  - '🔒 [By EbraSha] #37'
-  - '🔒 [By EbraSha] #38'
-  - '🔒 [By EbraSha] #39'
-  - '🔒 [By EbraSha] #40'
-  - '🔒 [By EbraSha] #41'
-  - '🔒 [By EbraSha] #42'
-  - '🔒 [By EbraSha] #43'
-  - '🔒 [By EbraSha] #44'
-  - '🔒 [By EbraSha] #45'
-  - '🔒 [By EbraSha] #46'
-  - '🔒 [By EbraSha] #47'
-  - '🔒 [By EbraSha] #48'
-  - '🔒 [By EbraSha] #49'
-  - '🔒 [By EbraSha] #50'
-  - '🔒 [By EbraSha] #51'
-  - '🔒 [By EbraSha] #52'
-  - '🔒 [By EbraSha] #53'
+  - '🔒 [By EbraSha] #180'
+  - '🔒 [By EbraSha] #181'
+  - '🔒 [By EbraSha] #182'
+  - '🔒 [By EbraSha] #183'
+  - '🔒 [By EbraSha] #184'
+  - '🔒 [By EbraSha] #185'
+  - '🔒 [By EbraSha] #186'
+  - '🔒 [By EbraSha] #187'
+  - '🔒 [By EbraSha] #188'
+  - '🔒 [By EbraSha] #189'
+  - '🔒 [By EbraSha] #190'
+  - '🔒 [By EbraSha] #191'
+  - '🔒 [By EbraSha] #192'
+  - '🔒 [By EbraSha] #193'
+  - '🔒 [By EbraSha] #194'
+  - '🔒 [By EbraSha] #195'
+  - '🔒 [By EbraSha] #196'
+  - '🔒 [By EbraSha] #197'
+  - '🔒 [By EbraSha] #198'
+  - '🔒 [By EbraSha] #199'
+  - '🔒 [By EbraSha] #200'
+  - '🔒 [By EbraSha] #201'
+  - '🔒 [By EbraSha] #202'
+  - '🔒 [By EbraSha] #203'
+  - '🔒 [By EbraSha] #204'
+  - '🔒 [By EbraSha] #205'
+  - '🔒 [By EbraSha] #210'
+  - '🔒 [By EbraSha] #211'
+  - '🔒 [By EbraSha] #212'
+  - '🔒 [By EbraSha] #213'
+  - '🔒 [By EbraSha] #214'
+  - '🔒 [By EbraSha] #215'
+  - '🔒 [By EbraSha] #216'
+  - '🔒 [By EbraSha] #217'
+  - '🔒 [By EbraSha] #218'
+  - '🔒 [By EbraSha] #219'
+  - '🔒 [By EbraSha] #220'
+  - '🔒 [By EbraSha] #221'
+  - '🔒 [By EbraSha] #222'
+  - '🔒 [By EbraSha] #223'
+  - '🔒 [By EbraSha] #224'
+  - '🔒 [By EbraSha] #225'
+  - '🔒 [By EbraSha] #226'
+  - '🔒 [By EbraSha] #227'
+  - '🔒 [By EbraSha] #228'
+  - '🔒 [By EbraSha] #229'
+  - '🔒 [By EbraSha] #230'
+  - '🔒 [By EbraSha] #231'
+  - '🔒 [By EbraSha] #232'
+  - '🔒 [By EbraSha] #233'
+  - '🔒 [By EbraSha] #234'
+  - '🔒 [By EbraSha] #235'
+  - '🔒 [By EbraSha] #236'
+  - '🔒 [By EbraSha] #237'
 rules:
 - DOMAIN-SUFFIX,ads.google.com,⛔ 广告拦截
 - DOMAIN-SUFFIX,adservice.google.com,⛔ 广告拦截

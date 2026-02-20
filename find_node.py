@@ -563,6 +563,92 @@ def fetch_and_parse(url: str) -> list[dict]:
 # Dedup & Categorize
 # ============================================================
 
+# Known valid SS/SSR ciphers
+VALID_SS_CIPHERS = {
+    "aes-128-gcm", "aes-192-gcm", "aes-256-gcm",
+    "aes-128-cfb", "aes-192-cfb", "aes-256-cfb",
+    "aes-128-ctr", "aes-192-ctr", "aes-256-ctr",
+    "rc4-md5", "rc4",
+    "chacha20", "chacha20-ietf", "chacha20-ietf-poly1305",
+    "xchacha20-ietf-poly1305",
+    "2022-blake3-aes-128-gcm", "2022-blake3-aes-256-gcm",
+    "2022-blake3-chacha20-poly1305",
+    "none", "plain",
+}
+
+
+def validate_proxy(p: dict) -> bool:
+    """Validate that a proxy has all required fields with sane values."""
+    ptype = p.get("type", "")
+    server = p.get("server", "")
+    port = p.get("port", 0)
+
+    # Basic checks
+    if not server or not ptype:
+        return False
+    if not isinstance(port, int) or port <= 0 or port > 65535:
+        return False
+    # Reject loopback/private
+    if server.startswith(("127.", "10.", "192.168.", "0.0.0.", "localhost")):
+        return False
+
+    if ptype == "vmess":
+        if not p.get("uuid"):
+            return False
+    elif ptype == "vless":
+        if not p.get("uuid"):
+            return False
+    elif ptype == "ss":
+        cipher = p.get("cipher", "")
+        password = p.get("password", "")
+        if not cipher or not password:
+            return False
+        if cipher.lower() not in VALID_SS_CIPHERS:
+            return False
+    elif ptype == "ssr":
+        if not p.get("cipher") or not p.get("password"):
+            return False
+        if not p.get("protocol") or not p.get("obfs"):
+            return False
+    elif ptype == "trojan":
+        if not p.get("password"):
+            return False
+    elif ptype == "hysteria2":
+        if not p.get("password"):
+            return False
+    elif ptype in ("socks5", "http"):
+        pass  # minimal requirements
+    else:
+        return False  # unknown type
+
+    return True
+
+
+def clean_proxy(p: dict) -> dict:
+    """Clean up a proxy dict: remove empty fields, set defaults."""
+    cleaned = {}
+    for k, v in p.items():
+        # Remove None and empty string values (except password which can look empty-ish)
+        if v is None:
+            continue
+        if isinstance(v, str) and v == "" and k != "password":
+            continue
+        # Remove empty dict values
+        if isinstance(v, dict) and not v:
+            continue
+        cleaned[k] = v
+
+    # Set default network for vmess if missing
+    if cleaned.get("type") == "vmess" and "network" not in cleaned:
+        cleaned["network"] = "tcp"
+
+    # Set default cipher for vmess if missing
+    if cleaned.get("type") == "vmess" and not cleaned.get("cipher"):
+        cleaned["cipher"] = "auto"
+
+    return cleaned
+
+
 def dedup_proxies(proxies: list[dict]) -> list[dict]:
     """Deduplicate proxies by server+port+type, keep unique names."""
     seen = set()
@@ -964,6 +1050,13 @@ def main():
     # Dedup
     proxies = dedup_proxies(all_proxies)
     print(f"After dedup: {len(proxies)} unique nodes")
+
+    # Validate
+    proxies = [p for p in proxies if validate_proxy(p)]
+    print(f"After validation: {len(proxies)} valid nodes")
+
+    # Clean up empty/None fields
+    proxies = [clean_proxy(p) for p in proxies]
 
     # Filter and select best nodes
     proxies = select_best_nodes(proxies)
