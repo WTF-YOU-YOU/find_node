@@ -24,8 +24,15 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Cache mihomo binary
+        uses: actions/cache@v4
+        with:
+          path: /tmp/mihomo_cache
+          key: mihomo-linux-amd64-v1
+
       - name: Run find_node
         run: python find_node.py
+        timeout-minutes: 30
 
       - name: Commit and push
         run: |
