@@ -13,6 +13,13 @@ import time
 import socket
 import ssl
 import concurrent.futures
+import subprocess
+import tempfile
+import platform
+import gzip
+import zipfile
+import shutil
+import os
 import yaml
 import requests
 
@@ -599,6 +606,18 @@ def validate_proxy(p: dict) -> bool:
     elif ptype == "vless":
         if not p.get("uuid"):
             return False
+        # Reject legacy xtls flows unsupported by mihomo
+        flow = p.get("flow", "")
+        if flow and flow not in ("xtls-rprx-vision", ""):
+            return False
+        # Validate REALITY short-id if present (must be hex, max 16 chars)
+        reality_opts = p.get("reality-opts", {})
+        if isinstance(reality_opts, dict):
+            sid = reality_opts.get("short-id", "")
+            if sid:
+                sid = str(sid)
+                if len(sid) > 16 or not all(c in "0123456789abcdefABCDEF" for c in sid):
+                    return False
     elif ptype == "ss":
         cipher = p.get("cipher", "")
         password = p.get("password", "")
@@ -754,6 +773,13 @@ TCP_TIMEOUT = 3  # seconds per connection test
 MAX_WORKERS = 80  # concurrent test threads
 MAX_DELAY_MS = 2000  # discard nodes with latency above this
 
+# Mihomo kernel testing
+MIHOMO_TEST_URL = "http://www.gstatic.com/generate_204"
+MIHOMO_TEST_TIMEOUT = 5000        # ms, per-node timeout
+MIHOMO_API_CONCURRENCY = 20       # concurrent API calls
+MIHOMO_STARTUP_TIMEOUT = 30       # seconds, wait for mihomo startup
+MIHOMO_GITHUB_REPO = "MetaCubeX/mihomo"
+
 # Reusable SSL context (skip cert verify for speed)
 _SSL_CTX = ssl.create_default_context()
 _SSL_CTX.check_hostname = False
@@ -842,6 +868,342 @@ def batch_test_latency(proxies: list[dict]) -> list[dict]:
 
     print(f"Latency test done: {alive_count}/{total} alive, {slow_count} removed (>{MAX_DELAY_MS}ms), {len(alive_proxies)} kept")
     return alive_proxies
+
+
+# ============================================================
+# Mihomo Kernel Proxy Verification
+# ============================================================
+
+def _is_windows() -> bool:
+    """Detect Windows, including MINGW64/MSYS2 environments."""
+    s = platform.system()
+    return s == "Windows" or s.startswith("MINGW") or s.startswith("MSYS")
+
+
+def detect_mihomo_asset_prefix() -> tuple[str, str]:
+    """Return (asset name prefix, extension) for the current platform.
+
+    Asset names include version, e.g. 'mihomo-windows-amd64-v1-v1.19.20.zip',
+    so we match by prefix and extension.
+    """
+    if _is_windows():
+        return ("mihomo-windows-amd64-v1-v", ".zip")
+    machine = platform.machine().lower()
+    if machine in ("aarch64", "arm64"):
+        return ("mihomo-linux-arm64-v1-v", ".gz")
+    return ("mihomo-linux-amd64-v1-v", ".gz")
+
+
+def download_mihomo(work_dir: str) -> str | None:
+    """Download mihomo binary from GitHub Releases. Uses a cache in temp dir.
+
+    Returns path to the binary in work_dir, or None on failure.
+    """
+    prefix, ext = detect_mihomo_asset_prefix()
+    exe_name = "mihomo.exe" if _is_windows() else "mihomo"
+
+    # Check cache first
+    cache_dir = os.path.join(tempfile.gettempdir(), "mihomo_cache")
+    cached_exe = os.path.join(cache_dir, exe_name)
+    if os.path.exists(cached_exe):
+        dst = os.path.join(work_dir, exe_name)
+        shutil.copy2(cached_exe, dst)
+        print(f"  Using cached mihomo binary")
+        return dst
+
+    print(f"Downloading mihomo (matching: {prefix}*{ext})...")
+
+    try:
+        api_url = f"https://api.github.com/repos/{MIHOMO_GITHUB_REPO}/releases/latest"
+        resp = requests.get(api_url, headers=REQUEST_HEADERS, timeout=REQUEST_TIMEOUT)
+        resp.raise_for_status()
+        release = resp.json()
+
+        download_url = None
+        asset_name = None
+        for asset in release.get("assets", []):
+            name = asset["name"]
+            if name.startswith(prefix) and name.endswith(ext):
+                download_url = asset["browser_download_url"]
+                asset_name = name
+                break
+
+        if not download_url:
+            print(f"  [WARN] No asset matching '{prefix}*{ext}' in latest release")
+            return None
+
+        print(f"  Downloading: {asset_name}")
+        resp = requests.get(download_url, headers=REQUEST_HEADERS, timeout=120, stream=True)
+        resp.raise_for_status()
+
+        archive_path = os.path.join(work_dir, asset_name)
+        with open(archive_path, "wb") as f:
+            for chunk in resp.iter_content(chunk_size=8192):
+                f.write(chunk)
+
+        # Extract
+        if ext == ".gz":
+            exe_path = os.path.join(work_dir, exe_name)
+            with gzip.open(archive_path, "rb") as gz_in:
+                with open(exe_path, "wb") as f_out:
+                    shutil.copyfileobj(gz_in, f_out)
+            os.chmod(exe_path, 0o755)
+        elif ext == ".zip":
+            with zipfile.ZipFile(archive_path, "r") as zf:
+                zf.extractall(work_dir)
+            # Find the exe inside extracted files
+            exe_path = None
+            for fname in os.listdir(work_dir):
+                if fname.endswith(".exe") and "mihomo" in fname.lower():
+                    exe_path = os.path.join(work_dir, fname)
+                    break
+            if not exe_path:
+                print("  [WARN] No .exe found after extracting zip")
+                return None
+        else:
+            print(f"  [WARN] Unknown archive format: {ext}")
+            return None
+
+        if not os.path.exists(exe_path):
+            print("  [WARN] mihomo binary not found after extraction")
+            return None
+
+        # Cache for future runs
+        os.makedirs(cache_dir, exist_ok=True)
+        shutil.copy2(exe_path, cached_exe)
+
+        print(f"  mihomo downloaded and cached: {exe_path}")
+        return exe_path
+
+    except Exception as e:
+        print(f"  [WARN] Failed to download mihomo: {e}")
+        return None
+
+
+def find_free_port() -> int:
+    """Find a free TCP port for mihomo API."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(("127.0.0.1", 0))
+        return s.getsockname()[1]
+
+
+def generate_mihomo_test_config(proxies: list[dict], port: int, secret: str) -> dict:
+    """Generate minimal mihomo config for testing."""
+    return {
+        "mixed-port": 0,
+        "mode": "direct",
+        "log-level": "silent",
+        "external-controller": f"127.0.0.1:{port}",
+        "secret": secret,
+        "proxies": proxies,
+    }
+
+
+def start_mihomo(exe: str, config_path: str, log_path: str | None = None) -> subprocess.Popen:
+    """Start mihomo subprocess. If log_path is given, capture stdout+stderr there."""
+    stdout_target = subprocess.DEVNULL
+    log_file = None
+    if log_path:
+        log_file = open(log_path, "wb")
+        stdout_target = log_file
+    kwargs = dict(
+        stdout=stdout_target,
+        stderr=subprocess.STDOUT,
+    )
+    if _is_windows():
+        kwargs["creationflags"] = subprocess.CREATE_NO_WINDOW
+    proc = subprocess.Popen([exe, "-f", config_path], **kwargs)
+    proc._log_file = log_file  # attach so we can close later
+    return proc
+
+
+def wait_for_mihomo(api_base: str, secret: str) -> bool:
+    """Poll mihomo API until ready. Returns True if ready, False on timeout."""
+    headers = {}
+    if secret:
+        headers["Authorization"] = f"Bearer {secret}"
+    deadline = time.time() + MIHOMO_STARTUP_TIMEOUT
+    last_err = None
+    attempts = 0
+    while time.time() < deadline:
+        try:
+            resp = requests.get(f"{api_base}/proxies", headers=headers, timeout=2)
+            if resp.status_code == 200:
+                print("  mihomo API ready")
+                return True
+            last_err = f"HTTP {resp.status_code}"
+        except Exception as e:
+            last_err = str(e)
+        attempts += 1
+        if attempts % 5 == 0:
+            print(f"  Waiting for mihomo API... ({attempts} attempts, last: {last_err})")
+        time.sleep(0.5)
+    print(f"  [WARN] mihomo API did not become ready in time (last: {last_err})")
+    return False
+
+
+def test_proxy_delay_via_mihomo(api_base: str, secret: str, name: str) -> int | None:
+    """Test a single proxy via mihomo delay API. Returns delay ms or None."""
+    headers = {}
+    if secret:
+        headers["Authorization"] = f"Bearer {secret}"
+    encoded_name = urllib.parse.quote(name, safe="")
+    url = f"{api_base}/proxies/{encoded_name}/delay"
+    params = {"url": MIHOMO_TEST_URL, "timeout": MIHOMO_TEST_TIMEOUT}
+    try:
+        resp = requests.get(url, headers=headers, params=params, timeout=MIHOMO_TEST_TIMEOUT / 1000 + 3)
+        if resp.status_code == 200:
+            data = resp.json()
+            delay = data.get("delay", 0)
+            if delay and delay > 0:
+                return delay
+        return None
+    except Exception:
+        return None
+
+
+def batch_test_mihomo(proxies: list[dict], api_base: str, secret: str) -> list[dict]:
+    """Test all proxies via mihomo API concurrently. Returns alive proxies with delay."""
+    total = len(proxies)
+    print(f"\nTesting {total} nodes via mihomo ({MIHOMO_API_CONCURRENCY} concurrent)...")
+
+    alive_proxies = []
+    alive_count = 0
+    done_count = 0
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=MIHOMO_API_CONCURRENCY) as executor:
+        future_map = {
+            executor.submit(test_proxy_delay_via_mihomo, api_base, secret, p["name"]): p
+            for p in proxies
+        }
+        for future in concurrent.futures.as_completed(future_map):
+            proxy = future_map[future]
+            done_count += 1
+            try:
+                delay = future.result()
+                if delay is not None:
+                    if delay <= MAX_DELAY_MS:
+                        proxy["delay"] = delay
+                        alive_proxies.append(proxy)
+                        alive_count += 1
+            except Exception:
+                pass
+
+            if done_count % 50 == 0 or done_count == total:
+                print(f"  Progress: {done_count}/{total} tested, {alive_count} alive")
+
+    print(f"Mihomo test done: {alive_count}/{total} alive, {len(alive_proxies)} kept (≤{MAX_DELAY_MS}ms)")
+    return alive_proxies
+
+
+def _parse_mihomo_bad_proxy_index(log_text: str) -> int | None:
+    """Parse mihomo crash log to find the offending proxy index.
+
+    Example log line: 'Parse config error: proxy 8053: invalid REALITY short ID'
+    Returns 8053, or None if not parseable.
+    """
+    m = re.search(r"proxy (\d+):", log_text)
+    if m:
+        return int(m.group(1))
+    return None
+
+
+def batch_test_latency_mihomo(proxies: list[dict]) -> list[dict]:
+    """Orchestrator: download mihomo, test proxies, fall back to TCP on failure."""
+    work_dir = tempfile.mkdtemp(prefix="mihomo_test_")
+    process = None
+    try:
+        # Download mihomo
+        exe = download_mihomo(work_dir)
+        if not exe:
+            print("  Falling back to TCP latency test...")
+            return batch_test_latency(proxies)
+
+        # Retry loop: mihomo may crash on invalid proxy configs
+        max_retries = 50
+        remaining = list(proxies)
+        for attempt in range(max_retries + 1):
+            # Find free port and generate config
+            port = find_free_port()
+            secret = f"test_{random.randint(100000, 999999)}"
+            config = generate_mihomo_test_config(remaining, port, secret)
+            config_path = os.path.join(work_dir, "config.yaml")
+            with open(config_path, "w", encoding="utf-8") as f:
+                yaml.dump(config, f, default_flow_style=False, allow_unicode=True, sort_keys=False, width=1000)
+
+            # Start mihomo
+            log_path = os.path.join(work_dir, "mihomo.log")
+            print(f"  Starting mihomo on port {port} ({len(remaining)} proxies, attempt {attempt + 1})...")
+            process = start_mihomo(exe, config_path, log_path)
+            api_base = f"http://127.0.0.1:{port}"
+
+            # Quick check: did mihomo crash immediately on config parse?
+            time.sleep(2)
+            retcode = process.poll()
+            if retcode is not None:
+                # Crashed - read log and remove bad proxy
+                if hasattr(process, '_log_file') and process._log_file:
+                    try:
+                        process._log_file.close()
+                    except Exception:
+                        pass
+                log_text = ""
+                if os.path.exists(log_path):
+                    with open(log_path, "rb") as lf:
+                        log_text = lf.read().decode("utf-8", errors="ignore")
+                bad_idx = _parse_mihomo_bad_proxy_index(log_text)
+                if bad_idx is not None and bad_idx < len(remaining) and attempt < max_retries:
+                    bad_name = remaining[bad_idx].get("name", "?")
+                    print(f"  Removing invalid proxy #{bad_idx}: {ascii(bad_name)}")
+                    remaining.pop(bad_idx)
+                    process = None
+                    continue
+                # Unrecoverable crash
+                print(f"  mihomo exited({retcode})")
+                if log_text.strip():
+                    safe_log = log_text[-2000:].encode("ascii", errors="replace").decode("ascii")
+                    print(f"  mihomo log:\n{safe_log}")
+                break
+
+            # Process is running - wait for API
+            if wait_for_mihomo(api_base, secret):
+                # Success - test all proxies
+                result = batch_test_mihomo(remaining, api_base, secret)
+                return result
+
+            # API timeout but process still running - unrecoverable
+            print(f"  mihomo process still running but API unresponsive")
+            break
+
+        print("  Falling back to TCP latency test...")
+        return batch_test_latency(proxies)
+
+    except Exception as e:
+        print(f"  [WARN] Mihomo testing failed: {e}")
+        print("  Falling back to TCP latency test...")
+        return batch_test_latency(proxies)
+
+    finally:
+        # Cleanup process
+        if process is not None:
+            if hasattr(process, '_log_file') and process._log_file:
+                try:
+                    process._log_file.close()
+                except Exception:
+                    pass
+            try:
+                process.terminate()
+                process.wait(timeout=5)
+            except Exception:
+                try:
+                    process.kill()
+                except Exception:
+                    pass
+        # Cleanup temp dir
+        try:
+            shutil.rmtree(work_dir, ignore_errors=True)
+        except Exception:
+            pass
 
 
 def select_best_nodes(proxies: list[dict], max_nodes: int = MAX_NODES) -> list[dict]:
@@ -1172,8 +1534,8 @@ def main():
     proxies = [p for p in proxies if not is_excluded(p)]
     print(f"After filtering CN/HK/TW/high-risk: {len(proxies)} nodes")
 
-    # Test latency (TCP handshake) and remove dead nodes
-    proxies = batch_test_latency(proxies)
+    # Test latency via mihomo kernel (falls back to TCP if mihomo unavailable)
+    proxies = batch_test_latency_mihomo(proxies)
 
     # Sort by latency
     proxies.sort(key=lambda p: p.get("delay", 99999))
