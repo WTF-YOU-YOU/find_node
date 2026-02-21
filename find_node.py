@@ -37,10 +37,6 @@ SUB_URLS = [
     "https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/v2ray.txt",
     "https://raw.githubusercontent.com/Leon406/SubCrawler/master/sub/share/v2",
     # --- New sources (verified 2026-02-20) ---
-    # ebrasha: updated every 15 min, all protocols
-    "https://raw.githubusercontent.com/ebrasha/free-v2ray-public-list/refs/heads/main/all_extracted_configs.txt",
-    # Epodonios: updated every 5 min, vmess/vless/trojan/ss
-    "https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/All_Configs_Sub.txt",
     # mahdibland: aggregator with speed-tested nodes
     "https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt",
     # Mahdi0024: auto-collected and tested proxies
