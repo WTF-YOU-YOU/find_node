@@ -776,7 +776,7 @@ MAX_DELAY_MS = 2000  # discard nodes with latency above this
 # Mihomo kernel testing
 MIHOMO_TEST_URL = "http://www.gstatic.com/generate_204"
 MIHOMO_TEST_TIMEOUT = 5000        # ms, per-node timeout
-MIHOMO_API_CONCURRENCY = 20       # concurrent API calls
+MIHOMO_API_CONCURRENCY = 50       # concurrent API calls
 MIHOMO_STARTUP_TIMEOUT = 30       # seconds, wait for mihomo startup
 MIHOMO_GITHUB_REPO = "MetaCubeX/mihomo"
 

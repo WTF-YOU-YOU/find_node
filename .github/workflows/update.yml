@@ -32,7 +32,7 @@ jobs:
 
       - name: Run find_node
         run: python find_node.py
-        timeout-minutes: 30
+        timeout-minutes: 45
 
       - name: Commit and push
         run: |
